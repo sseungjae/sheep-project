@@ -21,9 +21,17 @@ export class Sheep{
     }
 
     draw(ctx, t, dots) {
-        this.curFrame += 1;
-        if (this.curFrame == this.totalFrame){
-            this.curFrame = 0;
+        if(!this.time){
+            this.time = t;
+        }
+
+        const now = t - this.time;
+        if(now > this.fpsTime){
+            this.time = t;
+            this.curFrame += 1;
+            if (this.curFrame == this.totalFrame){
+                this.curFrame = 0;
+            }
         }
         this.animate(ctx, dots);
 
