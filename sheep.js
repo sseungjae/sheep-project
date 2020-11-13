@@ -38,7 +38,7 @@ export class Sheep{
     }
 
     animate(ctx, dots) {
-        this.x = 650;
+        this.x -= this.speed;
         this.y = 550;
 
         ctx.save();
@@ -57,4 +57,16 @@ export class Sheep{
         );
         ctx.restore();
     }
+
+    getQuadValue(p0, p1, p2, t) {
+        return(1 - t) * (1 - t) * p0 +2 *(1 - t) * t * p1 + t * t * p2;
+    }
+
+    getPointOnQuad(x1, y1, x2, y2, x3, y3, t){
+        return {
+            x: this.getQuadValue(x1, x2, x3, t),
+            y: this.getQuadValue(y1, y2, y3, t)
+        };
+    }
+
 }
