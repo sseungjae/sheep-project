@@ -39,7 +39,8 @@ export class Sheep{
 
     animate(ctx, dots) {
         this.x -= this.speed;
-        this.y = 550;
+        const closest = this.getY(this.x, dots);
+        this.y = closest.y;
 
         ctx.save();
         ctx.translate(this.x, this.y);
@@ -57,6 +58,38 @@ export class Sheep{
         );
         ctx.restore();
     }
+
+    getY(x, dots) {
+        for (let i = 1; i < dots.length; i++) {
+            if(x >= dots[i].x1 && x <= dots[i].x3) {
+                return this.getY2(x, dots[i]);
+            }
+        }
+
+        return {
+            y: 0,
+            rotation: 0
+        };
+
+    }
+
+    getY2(x, dot) {
+        const total = 200;
+        let pt = this.getPointOnQuad(dot.x1, dot.y1, dot.x2, dot.y2, dot.x3, dot.y3, 0);
+        let prevX = pt.x;
+        for(let i = 1; i < total; i++){
+            const t = i / total;
+            pt = this.getPointOnQuad(dot.x1, dot.y1, dot.x2, dot.y2, dot.x3, dot.y3, t);
+
+            if (x >= prevX && x <= pt.x){
+                return pt;
+            }
+            prevX = pt.x;
+        }
+        return pt;
+    }
+
+
 
     getQuadValue(p0, p1, p2, t) {
         return(1 - t) * (1 - t) * p0 +2 *(1 - t) * t * p1 + t * t * p2;
