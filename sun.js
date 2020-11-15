@@ -62,6 +62,8 @@ export class Sun {
     getCirclePoint(radius, t) {
         const theta = Math.PI * 2 * t;
 
+
+        
         return{
             x: (Math.cos(theta) * radius),
             y: (Math.sin(theta) * radius)
